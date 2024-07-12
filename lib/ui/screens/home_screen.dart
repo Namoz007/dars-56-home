@@ -1,3 +1,4 @@
+import 'package:dars_56_home/Utils/app_utils.dart';
 import 'package:dars_56_home/cubits/product_cubit.dart';
 import 'package:dars_56_home/cubits/product_state.dart';
 import 'package:dars_56_home/data/models/product.dart';
@@ -18,6 +19,18 @@ class _HomeScreenState extends State<HomeScreen> {
     final productCubit = context.watch<ProductCubit>();
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: (){
+            setState(() {
+              if(AppUtils.theme == ThemeData.light()){
+                AppUtils.theme = ThemeData.dark();
+              }else{
+                AppUtils.theme = ThemeData.light();
+              }
+            });
+          },
+          icon: AppUtils.theme == ThemeData.light() ? Icon(Icons.sunny) : Icon(Icons.nightlight),
+        ),
         title: const Text("Online shop"),
         centerTitle: true,
         actions: [
