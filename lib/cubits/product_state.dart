@@ -7,7 +7,8 @@ final class InitialState extends ProductState{}
 final class LoadingState extends ProductState{}
 
 final class LoadedState extends ProductState{
-  List<Product> products = [];
+  List<Product> products = [
+  ];
 
   LoadedState(this.products);
 }

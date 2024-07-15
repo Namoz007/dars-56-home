@@ -1,7 +1,10 @@
 import 'package:dars_56_home/Utils/app_utils.dart';
+import 'package:dars_56_home/cubits/cart_cubit.dart';
 import 'package:dars_56_home/cubits/product_cubit.dart';
 import 'package:dars_56_home/cubits/product_state.dart';
 import 'package:dars_56_home/data/models/product.dart';
+import 'package:dars_56_home/ui/screens/cart_screen.dart';
+import 'package:dars_56_home/ui/widgets/custom_drawer.dart';
 import 'package:dars_56_home/ui/widgets/dialog_for_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,20 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final productCubit = context.watch<ProductCubit>();
+    final cartCubit = context.watch<CartCubit>();
     return Scaffold(
+      drawer: CustomDrawer(),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: (){
-            setState(() {
-              if(AppUtils.theme == ThemeData.light()){
-                AppUtils.theme = ThemeData.dark();
-              }else{
-                AppUtils.theme = ThemeData.light();
-              }
-            });
-          },
-          icon: AppUtils.theme == ThemeData.light() ? Icon(Icons.sunny) : Icon(Icons.nightlight),
-        ),
         title: const Text("Online shop"),
         centerTitle: true,
         actions: [
@@ -87,13 +80,46 @@ class _HomeScreenState extends State<HomeScreen> {
                         }, icon: Icon(Icons.delete,color: Colors.red,),),
                      ],
                     ),
-                    Text("${products[index].title}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("\$${products[index].price}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),),
+                        Text("${products[index].title}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
+                        InkWell(
+                          onTap: (){
+                            cartCubit.addProduct(products[index]);
+                          },
+                          child: Icon(Icons.add_shopping_cart,size: 30,),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               );
             },
           );
         },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+      floatingActionButton: InkWell(
+        onTap: (){
+          showModalBottomSheet(context: context, builder: (context) => CartScreen());
+        },
+        child: Container(
+          height: 70,
+          width: 70,
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(15)
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Icon(Icons.shopping_cart,color: Colors.white,size: 40,),
+              Padding(padding: EdgeInsets.only(left: 35,top: 35),child: Text(cartCubit.carts.length.toString(),style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red,fontSize: 25),),)
+            ],
+          ),
+        ),
       ),
     );
   }

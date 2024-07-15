@@ -1,4 +1,6 @@
 import 'package:dars_56_home/Utils/app_utils.dart';
+import 'package:dars_56_home/cubits/cart_cubit.dart';
+import 'package:dars_56_home/cubits/order_cubit.dart';
 import 'package:dars_56_home/cubits/product_cubit.dart';
 import 'package:dars_56_home/ui/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,16 @@ class MainApp extends StatelessWidget {
         BlocProvider(
           create: (context){
             return ProductCubit();
+          },
+        ),
+        BlocProvider(
+          create: (context){
+            return CartCubit();
+          },
+        ),
+        BlocProvider(
+          create: (context){
+            return OrderCubit();
           },
         )
       ],

@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductCubit extends Cubit<ProductState> {
-  ProductCubit() : super(InitialState());
-  List<Product> _products = [];
+  ProductCubit() : super(LoadedState([Product(id: "1", title: "iPhone",price: 1200, imageUrl: "https://pic4.zhimg.com/v2-655850f6727bd8713f49b5cfa27ec927_r.jpg", isFavorite: false),]));
+  List<Product> _products = [
+    Product(id: "1", title: "iPhone",price: 1200, imageUrl: "https://pic4.zhimg.com/v2-655850f6727bd8713f49b5cfa27ec927_r.jpg", isFavorite: false),
+  ];
 
 
   void addProduct(Product product) {

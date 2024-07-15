@@ -15,6 +15,7 @@ class DialogForProducts extends StatefulWidget {
 class _DialogForProductsState extends State<DialogForProducts> {
   final _formKey = GlobalKey<FormState>();
   final _productTitle = TextEditingController();
+  final _productPrice = TextEditingController();
   final _productImgUrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,29 @@ class _DialogForProductsState extends State<DialogForProducts> {
                     borderRadius: BorderRadius.circular(25),
                   ),
                   hintText: widget.isAdd ? "Product title" : "${widget.product!.title}",
+                ),
+              ),
+
+              SizedBox(height: 20,),
+
+              TextFormField(
+                validator: (value){
+                  if(value == null || value.isEmpty)
+                    return "Please, return input product price";
+
+                  try{
+                    double.parse(value);
+                    return null;
+                  }catch(e){
+                    return "Prduct price type not true";
+                  }
+                },
+                controller: _productPrice,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  hintText: widget.isAdd ? "Product price" : widget.product!.imageUrl,
                 ),
               ),
               SizedBox(height: 20,),
@@ -75,14 +99,14 @@ class _DialogForProductsState extends State<DialogForProducts> {
         ElevatedButton(onPressed: (){
           if(_formKey.currentState!.validate()){
             if(widget.isAdd){
-              productCubit.addProduct(Product(id: ''.toString(), title: _productTitle.text, imageUrl: _productImgUrl.text, isFavorite: false),);
+              productCubit.addProduct(Product(id: ''.toString(), title: _productTitle.text,price: double.parse(_productPrice.text), imageUrl: _productImgUrl.text, isFavorite: false),);
               Navigator.pop(context);
             }else{
               productCubit.editProduct(widget.product!.id, _productTitle.text, _productImgUrl.text);
               Navigator.pop(context);
             }
           }
-        }, child: Text("Save"),),
+        }, child: const Text("Save"),),
       ],
     );
   }
